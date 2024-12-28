@@ -881,6 +881,8 @@ require('lazy').setup({
         -- 'enter' for enter to accept
         -- 'none' for no mappings
         --
+        window = {},
+
         -- For an understanding of why the 'default' preset is recommended,
         -- you will need to read `:help ins-completion`
 
