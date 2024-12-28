@@ -509,7 +509,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -868,6 +868,8 @@ require('lazy').setup({
         -- 'enter' for enter to accept
         -- 'none' for no mappings
         --
+        window = {},
+
         -- For an understanding of why the 'default' preset is recommended,
         -- you will need to read `:help ins-completion`
         --
