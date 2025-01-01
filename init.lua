@@ -624,6 +624,7 @@ require('lazy').setup({
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -643,23 +644,11 @@ require('lazy').setup({
             },
             staticcheck = true,
             gofumpt = true,
-            inlay_hints = true,
-          },
-          extensions = { 'tmpl', 'gohtml', 'tpl' },
-          analyses = {
-            template = true,
           },
         },
         emmet_ls = {
-          filetypes = { 'html', 'tmpl', 'template', 'heex', 'erb' },
-          settings = {
-            includeLanguages = {
-              erb = 'html',
-            },
-          },
-        },
-        htmx = {
-          filetypes = { 'html', 'templ', 'template' },
+          filetypes = { 'html', 'tmpl', 'template' },
+          settings = {},
         },
         html = {
           init_options = {
@@ -950,7 +939,7 @@ require('lazy').setup({
       require('tokyonight').setup {
         styles = {
           comments = { italic = false }, -- Disable italics in comments
-
+          { name = 'buffer' },
         },
       }
 
