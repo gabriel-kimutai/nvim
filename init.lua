@@ -12,9 +12,15 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
-vim.o.softtabstop = 2
-vim.o.shiftwidth = 2
-vim.o.expandtab = false
+-- Some indenting stuff
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+
+vim.o.expandtab = true
+vim.o.smartindent = true
+
+-- Disable swapfile
+vim.o.swapfile = false
 
 -- Make line numbers default
 vim.o.number = true
@@ -111,6 +117,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -651,6 +658,42 @@ require('lazy').setup({
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
+        tailwindcss = {
+          filetypes = {
+            'templ',
+            'tmpl',
+            'template',
+            'astro',
+            'javascript',
+            'typescript',
+            'react',
+            'heex',
+            'html',
+            'elixir',
+            'eelixir',
+          },
+          init_options = {
+            userLanguages = {
+              elixir = 'html-eex',
+              eelixir = 'html-eex',
+              heex = 'html-eex',
+            },
+          },
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  'class[:]\\s*"([^"]*)"',
+                },
+              },
+              includeLanguages = {
+                templ = 'html',
+                tmpl = 'html',
+                template = 'html',
+              },
+            },
+          },
+        },
         volar = {},
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {
