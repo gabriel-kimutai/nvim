@@ -102,6 +102,13 @@ vim.filetype.add {
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- File types
+vim.filetype.add {
+  extension = {
+    ['http'] = 'http',
+  },
+}
+
 -- [[ Basic Keymaps ]]
 --
 --  See `:help vim.keymap.set()`
@@ -682,6 +689,9 @@ require('lazy').setup({
               erb = 'html',
             },
           },
+        },
+        htmx = {
+          filetypes = { 'html', 'templ', 'template' },
         },
         htmx = {
           filetypes = { 'html', 'templ', 'template' },
