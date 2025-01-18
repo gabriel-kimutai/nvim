@@ -81,6 +81,13 @@ vim.opt.cursorline = false
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- File types
+vim.filetype.add {
+  extension = {
+    ['http'] = 'http',
+  },
+}
+
 -- [[ Basic Keymaps ]]
 --
 --  See `:help vim.keymap.set()`
@@ -566,6 +573,9 @@ require('lazy').setup({
           filetypes = { 'html', 'tmpl', 'template' },
           settings = {},
         },
+        htmx = {
+          filetypes = { 'html', 'templ', 'template' },
+        },
         html = {
           init_options = {
             configurationSection = { 'html', 'css', 'javascript' },
@@ -638,6 +648,10 @@ require('lazy').setup({
             'javascript',
             'typescript',
             'vue',
+            'javascriptreact',
+            'javascriptreact.jsx',
+            'typescriptreact',
+            'typescript.tsx',
           },
         },
         --
