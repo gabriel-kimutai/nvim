@@ -16,11 +16,11 @@ return {
       darkness = 'stark',
       transparent_background = true,
     }
-    vim.o.termguicolors = true
-    vim.o.background = 'dark'
-    vim.cmd.colorscheme 'forestbones'
+    -- vim.o.termguicolors = true
+    -- vim.o.background = 'dark'
+    -- vim.cmd.colorscheme 'forestbones'
     -- You can configure highlights by doing something like:
-    vim.cmd.hi 'Comment gui=none'
+    -- vim.cmd.hi 'Comment gui=none'
   end,
   -- Optionally install Lush. Allows for more configuration or extending the colorscheme
   -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
