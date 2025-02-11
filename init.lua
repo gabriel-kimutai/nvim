@@ -15,7 +15,6 @@ vim.g.have_nerd_font = true
 -- Some indenting stuff
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
-
 vim.o.expandtab = true
 vim.o.smartindent = true
 
@@ -568,10 +567,18 @@ require('lazy').setup({
             staticcheck = true,
             gofumpt = true,
           },
+          extensions = { 'tmpl', 'gohtml', 'tpl' },
+          analyses = {
+            template = true,
+          },
         },
         emmet_ls = {
-          filetypes = { 'html', 'tmpl', 'template' },
-          settings = {},
+          filetypes = { 'html', 'tmpl', 'template', 'heex', 'erb' },
+          settings = {
+            includeLanguages = {
+              erb = 'html',
+            },
+          },
         },
         htmx = {
           filetypes = { 'html', 'templ', 'template' },
@@ -607,6 +614,7 @@ require('lazy').setup({
             'react',
             'heex',
             'html',
+            'erb',
             'elixir',
             'eelixir',
           },
@@ -781,12 +789,15 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'onsails/lspkind.nvim',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+
+      local lspkind = require 'lspkind'
 
       cmp.setup {
         snippet = {
@@ -860,6 +871,16 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'buffer' },
+        },
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol',
+            maxwidth = {
+              menu = 50,
+              abbr = 50,
+            },
+            symbol_map = {},
+          },
         },
       }
 
