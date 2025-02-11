@@ -652,10 +652,18 @@ require('lazy').setup({
             staticcheck = true,
             gofumpt = true,
           },
+          extensions = { 'tmpl', 'gohtml', 'tpl' },
+          analyses = {
+            template = true,
+          },
         },
         emmet_ls = {
-          filetypes = { 'html', 'tmpl', 'template' },
-          settings = {},
+          filetypes = { 'html', 'tmpl', 'template', 'heex', 'erb' },
+          settings = {
+            includeLanguages = {
+              erb = 'html',
+            },
+          },
         },
         htmx = {
           filetypes = { 'html', 'templ', 'template' },
@@ -865,6 +873,30 @@ require('lazy').setup({
         },
         opts = {},
       },
+      'saadparwaiz1/cmp_luasnip',
+
+      -- Adds other completion capabilities.
+      --  nvim-cmp does not ship with all sources by default. They are split
+      --  into multiple repos for maintenance purposes.
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'onsails/lspkind.nvim',
+    },
+    config = function()
+      -- See `:help cmp`
+      local cmp = require 'cmp'
+      local luasnip = require 'luasnip'
+      luasnip.config.setup {}
+
+      local lspkind = require 'lspkind'
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        completion = { completeopt = 'menu,menuone,noinsert' },
 
       'folke/lazydev.nvim',
     },
@@ -950,6 +982,16 @@ require('lazy').setup({
         styles = {
           comments = { italic = false }, -- Disable italics in comments
           { name = 'buffer' },
+        },
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol',
+            maxwidth = {
+              menu = 50,
+              abbr = 50,
+            },
+            symbol_map = {},
+          },
         },
       }
 
