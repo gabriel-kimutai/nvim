@@ -12,6 +12,11 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+if vim.g.neovide then
+  vim.g.neovide_opacity = 0.8
+  vim.g.neovide_normal_opacity = 0.8
+end
+
 -- Some indenting stuff
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
@@ -566,6 +571,7 @@ require('lazy').setup({
             },
             staticcheck = true,
             gofumpt = true,
+            inlay_hints = true,
           },
           extensions = { 'tmpl', 'gohtml', 'tpl' },
           analyses = {
@@ -788,6 +794,7 @@ require('lazy').setup({
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-path',
       'onsails/lspkind.nvim',
     },
@@ -868,6 +875,7 @@ require('lazy').setup({
             group_index = 0,
           },
           { name = 'nvim_lsp' },
+          { name = 'nvim_lsp_signature_help' },
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'buffer' },
@@ -920,6 +928,8 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      -- Completion
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
