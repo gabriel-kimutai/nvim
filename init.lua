@@ -105,7 +105,13 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('i', 'jj', '<Esc>', { silent = true })
 
-vim.keymap.set('n', '<leader>o', '<cmd>Oil --float<CR>', { desc = '[O]pen file explorer', silent = true })
+local minifiles_toggle = function(...)
+  if not MiniFiles.close() then
+    MiniFiles.open(...)
+  end
+end
+
+vim.keymap.set('n', '<leader>o', minifiles_toggle, { desc = '[O]pen file explorer', silent = true })
 vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = '[S]earch [T]odos', silent = true })
 
 local opts = { silent = true }
@@ -642,7 +648,7 @@ require('lazy').setup({
           },
         },
         emmet_ls = {
-          filetypes = { 'html', 'tmpl', 'template', 'heex', 'erb' },
+          filetypes = { 'html', 'tmpl', 'template', 'heex', 'erb', 'typescriptreact', 'javascriptreact' },
           settings = {
             includeLanguages = {
               erb = 'html',
@@ -678,8 +684,8 @@ require('lazy').setup({
             'tmpl',
             'template',
             'astro',
-            'javascript',
-            'typescript',
+            'javascriptreact',
+            'typescriptreact',
             'react',
             'heex',
             'html',
@@ -709,28 +715,27 @@ require('lazy').setup({
             },
           },
         },
-        volar = {},
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {
-          init_options = {
-            plugins = {
-              {
-                name = '@vue/typescript-plugin',
-                location = '/usr/local/lib/node_modules/@vue/typescript-plugin',
-                languages = { 'javascript', 'typescript', 'vue' },
-              },
-            },
-          },
-          filetypes = {
-            'javascript',
-            'typescript',
-            'vue',
-            'javascriptreact',
-            'javascriptreact.jsx',
-            'typescriptreact',
-            'typescript.tsx',
-          },
-        },
+        -- ts_ls = {
+        --   init_options = {
+        --     plugins = {
+        --       {
+        --         name = '@vue/typescript-plugin',
+        --         location = '/usr/local/lib/node_modules/@vue/typescript-plugin',
+        --         languages = { 'javascript', 'typescript', 'vue' },
+        --       },
+        --     },
+        --   },
+        --   filetypes = {
+        --     'javascript',
+        --     'typescript',
+        --     'vue',
+        --     'javascriptreact',
+        --     'javascriptreact.jsx',
+        --     'typescriptreact',
+        --     'typescript.tsx',
+        --   },
+        -- },
         --
 
         lua_ls = {
@@ -771,6 +776,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
+        automatic_enable = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -831,6 +837,8 @@ require('lazy').setup({
     event = 'VimEnter',
     version = '1.*',
     dependencies = {
+      -- Copilot completions
+      { 'fang2hou/blink-copilot' },
       -- Snippet Engine
       {
         'L3MON4D3/LuaSnip',
@@ -895,19 +903,20 @@ require('lazy').setup({
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'mono',
+        nerd_font_variant = 'normal',
       },
 
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 100 },
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'copilot' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          copilot = { name = 'copilot', module = 'blink-copilot', score_offset = 100, async = true },
         },
       },
 
@@ -920,47 +929,31 @@ require('lazy').setup({
       -- the rust implementation via `'prefer_rust_with_warning'`
       --
       -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = 'lua' },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-
-        },
-      }
-
-      cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
-        sources = {
-          { name = 'vim-dadbod-completion' },
-          { name = 'buffer' },
-        },
-      })
-      cmp.setup.filetype({ 'tmpl', 'html', 'template' }, {
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'buffer' },
-        },
-      })
-    end,
-  },
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'folke/tokyonight.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     require('tokyonight').setup {
+  --       styles = {
+  --         comments = { italic = false }, -- Disable italics in comments
+  --       },
+  --     }
+  --   end,
+  -- },
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
