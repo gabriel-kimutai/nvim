@@ -105,13 +105,6 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('i', 'jj', '<Esc>', { silent = true })
 
-local minifiles_toggle = function(...)
-  if not MiniFiles.close() then
-    MiniFiles.open(...)
-  end
-end
-
-vim.keymap.set('n', '<leader>o', minifiles_toggle, { desc = '[O]pen file explorer', silent = true })
 vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = '[S]earch [T]odos', silent = true })
 
 local opts = { silent = true }
@@ -129,6 +122,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+
+-- Oil
+vim.keymap.set('n', '<leader>o', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -191,9 +187,13 @@ vim.keymap.set('n', '<space>tt', function()
   job_id = vim.bo.channel
 end)
 
-vim.keymap.set('n', '<space>air', function()
+vim.keymap.set('n', '<space>ra', function()
   vim.fn.chansend(job_id, { 'air\r\n' })
-end)
+end, { desc = 'Air autoreload' })
+
+vim.keymap.set('n', '<space>rn', function()
+  vim.fn.chansend(job_id, { 'npm run dev\r\n' })
+end, { desc = 'NPM run dev' })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -320,6 +320,7 @@ require('lazy').setup({
       spec = {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
+        { '<leader>r', group = '[R]un' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -693,7 +694,7 @@ require('lazy').setup({
           filetypes = { 'html', 'tmpl', 'template' },
           settings = {},
         },
-        -- pyright = {},
+        ruff = {},
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -846,7 +847,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'ruff' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
