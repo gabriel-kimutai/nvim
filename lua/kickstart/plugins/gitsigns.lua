@@ -11,6 +11,39 @@ return {
     ---@type Gitsigns.Config
     ---@diagnostic disable-next-line: missing-fields
     opts = {
+      signs = {
+        add = { text = '┃' },
+        change = { text = '┃' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked = { text = '┆' },
+      },
+      signs_staged = {
+        add = { text = '┃' },
+        change = { text = '┃' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked = { text = '┆' },
+      },
+      signs_staged_enable = true,
+      signcolumn = true, -- Keep signs in the gutter
+      numhl = false, -- Don't highlight the line numbers based on git status
+      linehl = false, -- Don't highlight the whole line background
+      word_diff = false,
+      watch_gitdir = { interval = 1000 },
+      attach_to_untracked = true,
+      current_line_blame = false, -- Toggle with <leader>tb
+
+      -- Match your transparent/floating style
+      preview_config = {
+        border = 'none', -- No border for hunk previews
+        style = 'minimal',
+        relative = 'cursor',
+        row = 0,
+        col = 1,
+      },
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
 
