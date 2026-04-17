@@ -74,3 +74,6 @@ vim.opt.tabstop = 2 -- Visual spaces per tab
 vim.opt.shiftwidth = 2 -- Size of an indent
 vim.opt.softtabstop = 2 -- Number of spaces tabs count for while editing
 vim.opt.expandtab = true -- Convert tabs to spaces
+
+-- swap --
+vim.opt.swapfile = false

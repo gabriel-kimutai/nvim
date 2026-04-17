@@ -490,7 +490,8 @@ require('lazy').setup({
       --  See `:help lsp-config` for information about keys and how to configure
       ---@type table<string, vim.lsp.Config>
       local servers = {
-        -- clangd = {},
+        clangd = {},
+        emmet_ls = {},
         pyright = {
           settings = {
             python = {
@@ -522,7 +523,7 @@ require('lazy').setup({
             vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format { bufnr = bufnr } end, { buffer = bufnr, desc = 'Ruff Format' })
           end,
         },
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
