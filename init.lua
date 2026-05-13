@@ -491,6 +491,13 @@ require('lazy').setup({
       ---@type table<string, vim.lsp.Config>
       local servers = {
         clangd = {},
+        zls = {
+          settings = {
+            zls = {
+              enable_build_on_save = true,
+            },
+          },
+        },
         emmet_ls = {},
         pyright = {
           settings = {
@@ -530,6 +537,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
+        tailwindcss = {},
 
         stylua = {}, -- Used to format Lua code
 
